@@ -1,9 +1,6 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-
 
 void displayMenu();
 void displayInstructions();
@@ -15,69 +12,55 @@ int getValidGuess();
 void displayResult(int guess, int target, int attempts);
 char askPlayAgain();
 
-
-
 int main()
 {
     int choice;
-    char playAgain = 'y';
-    
+    char playAgain = 'y';    
     /* Seed random number generator with current time */
     /* This ensures different random numbers on each run */
     srand(time(NULL));
-    
     /* Display welcome message */
     printf("\n========================================\n");
     printf("   Welcome to Number Guessing Game!\n");
     printf("========================================\n\n");
-    
     /* Main menu loop - continues until user exits */
     do
     {
         /* Display main menu */
         displayMenu();
-        
         /* Get user's choice */
         printf("\nEnter your choice (1-3): ");
-        scanf("%d", &choice);
-        
+        scanf("%d", &choice);        
         /* Process user's choice using switch statement */
         switch(choice)
         {
             case 1:
                 /* Start the game */
                 playGame();
-                break;
-                
+                break;                
             case 2:
                 /* Display instructions */
                 displayInstructions();
-                break;
-                
+                break;                
             case 3:
                 /* Exit the game */
                 printf("\nThank you for playing! Goodbye!\n\n");
-                return 0;
-                
+                return 0;                
             default:
                 /* Handle invalid menu choice */
                 printf("\nInvalid choice! Please enter 1, 2, or 3.\n\n");
                 break;
-        }
-        
+        }        
         /* Wait for user to press Enter before showing menu again */
         if(choice >= 1 && choice <= 3)
         {
             printf("\nPress Enter to continue...");
             while(getchar() != '\n');  /* Clear input buffer */
             getchar();  /* Wait for Enter key */
-        }
-        
-    } while(1);  /* Loop until user chooses to exit (case 3) */
-    
+        }        
+    } while(1);  /* Loop until user chooses to exit (case 3) */    
     return 0;
 }
-
 
 void displayMenu()
 {
@@ -89,7 +72,6 @@ void displayMenu()
     printf("  3. Exit\n");
     printf("========================================\n");
 }
-
 
 void displayInstructions()
 {
@@ -117,34 +99,28 @@ void displayInstructions()
     printf("========================================\n");
 }
 
-
 int getDifficulty()
 {
-    int difficulty;
-    
+    int difficulty;    
     printf("\n========================================\n");
     printf("       SELECT DIFFICULTY LEVEL\n");
     printf("========================================\n");
     printf("  1. Easy (1-50)\n");
     printf("  2. Medium (1-100)\n");
     printf("  3. Hard (1-500)\n");
-    printf("========================================\n");
-    
+    printf("========================================\n");    
     /* Get and validate difficulty choice */
     do
     {
         printf("\nEnter difficulty (1-3): ");
-        scanf("%d", &difficulty);
-        
+        scanf("%d", &difficulty);        
         if(difficulty < 1 || difficulty > 3)
         {
             printf("Invalid choice! Please enter 1, 2, or 3.\n");
         }
-    } while(difficulty < 1 || difficulty > 3);
-    
+    } while(difficulty < 1 || difficulty > 3);    
     return difficulty;
 }
-
 
 void setRange(int difficulty, int *min, int *max)
 {
@@ -166,7 +142,6 @@ void setRange(int difficulty, int *min, int *max)
     }
 }
 
-
 int getRandomNumber(int min, int max)
 {
     /* Generate random number in range [min, max] */
@@ -176,13 +151,11 @@ int getRandomNumber(int min, int max)
 int getValidGuess()
 {
     int guess;
-    int isValid = 0;
-    
+    int isValid = 0;    
     /* Keep asking until we get a valid integer */
     while(!isValid)
     {
-        printf("Enter your guess: ");
-        
+        printf("Enter your guess: ");        
         /* Check if input is a valid integer */
         if(scanf("%d", &guess) == 1)
         {
@@ -194,43 +167,34 @@ int getValidGuess()
             while(getchar() != '\n');
             printf("Invalid input! Please enter a number.\n");
         }
-    }
-    
+    }    
     return guess;
 }
-
 
 void playGame()
 {
     int difficulty, minRange, maxRange;
     int targetNumber, playerGuess;
     int attempts = 0;
-    char playAgain;
-    
+    char playAgain;    
     /* Get difficulty level from player */
-    difficulty = getDifficulty();
-    
+    difficulty = getDifficulty();    
     /* Set the range based on difficulty */
-    setRange(difficulty, &minRange, &maxRange);
-    
+    setRange(difficulty, &minRange, &maxRange);    
     /* Generate the random target number */
-    targetNumber = getRandomNumber(minRange, maxRange);
-    
+    targetNumber = getRandomNumber(minRange, maxRange);    
     printf("\n========================================\n");
     printf("         GAME STARTED!\n");
     printf("========================================\n");
     printf("I'm thinking of a number between %d and %d.\n", minRange, maxRange);
-    printf("Can you guess what it is?\n\n");
-    
+    printf("Can you guess what it is?\n\n");    
     /* Main game loop - continues until player guesses correctly */
     do
     {
         /* Get player's guess with validation */
-        playerGuess = getValidGuess();
-        
+        playerGuess = getValidGuess();        
         /* Increment attempt counter */
-        attempts++;
-        
+        attempts++;        
         /* Check the guess and provide feedback */
         if(playerGuess > targetNumber)
         {
@@ -243,14 +207,11 @@ void playGame()
         /* If neither too high nor too low, the guess is correct */
         /* Loop will exit after this iteration */
         
-    } while(playerGuess != targetNumber);
-    
+    } while(playerGuess != targetNumber);    
     /* Display winning message with attempt count */
-    displayResult(playerGuess, targetNumber, attempts);
-    
+    displayResult(playerGuess, targetNumber, attempts);    
     /* Ask if player wants to play again */
-    playAgain = askPlayAgain();
-    
+    playAgain = askPlayAgain();    
     if(playAgain == 'y' || playAgain == 'Y')
     {
         /* Start a new game (recursive call) */
@@ -259,7 +220,6 @@ void playGame()
     /* If 'n', return to main menu (function ends) */
 }
 
-
 void displayResult(int guess, int target, int attempts)
 {
     printf("\n========================================\n");
@@ -267,8 +227,7 @@ void displayResult(int guess, int target, int attempts)
     printf("========================================\n");
     printf("You guessed the number correctly!\n");
     printf("The number was: %d\n", target);
-    printf("Total attempts taken: %d\n", attempts);
-    
+    printf("Total attempts taken: %d\n", attempts);    
     /* Provide performance feedback based on attempts */
     if(attempts <= 5)
     {
@@ -292,14 +251,11 @@ void displayResult(int guess, int target, int attempts)
 
 char askPlayAgain()
 {
-    char response;
-    
-    printf("\nDo you want to play again? (y/n): ");
-    
+    char response;    
+    printf("\nDo you want to play again? (y/n): ");    
     /* Clear input buffer and get response */
     while(getchar() != '\n');
-    scanf("%c", &response);
-    
+    scanf("%c", &response);    
     /* Validate input - must be y/Y or n/N */
     while(response != 'y' && response != 'Y' && 
           response != 'n' && response != 'N')
@@ -307,8 +263,7 @@ char askPlayAgain()
         printf("Please enter 'y' for yes or 'n' for no: ");
         while(getchar() != '\n');
         scanf("%c", &response);
-    }
-    
+    }    
     return response;
 }
 
